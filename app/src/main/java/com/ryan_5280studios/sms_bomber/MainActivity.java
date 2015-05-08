@@ -4,14 +4,31 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Spinner;
+
+import javax.mail.MessagingException;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class MainActivity extends AppCompatActivity {
+    @InjectView(R.id.number)
+    EditText number;
+    @InjectView(R.id.carrier)
+    Spinner carriers;
+    @InjectView(R.id.messages)
+    Spinner messages;
+    @InjectView(R.id.message)
+    EditText message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
     }
 
     @Override
@@ -34,5 +51,18 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void send(View view) {
+        try {
+            new Email().sendEmail();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+//        new Email().send(number.getText().toString(),
+//                carriers.getSelectedItem().toString(),
+//                Integer.parseInt(String.valueOf(messages.getSelectedItem())),
+//                message.getText().toString());
+
     }
 }
