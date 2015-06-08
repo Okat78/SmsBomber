@@ -1,5 +1,6 @@
 package com.ryan_5280studios.sms_bomber;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     @InjectView(R.id.carrier)
     Spinner carriers;
     @InjectView(R.id.messages)
-    Spinner messages;
+    EditText messages;
     @InjectView(R.id.message)
     EditText message;
 
@@ -54,15 +55,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void send(View view) {
+
         try {
-            new Email().sendEmail();
+            new Email().email(number.getText().toString(),
+                    carriers.getSelectedItem().toString(),
+                    Integer.parseInt(String.valueOf(messages.getText().toString()
+                    )),
+                    message.getText().toString());
         } catch (MessagingException e) {
             e.printStackTrace();
         }
-//        new Email().send(number.getText().toString(),
-//                carriers.getSelectedItem().toString(),
-//                Integer.parseInt(String.valueOf(messages.getSelectedItem())),
-//                message.getText().toString());
 
+    }
+
+    public void lookup(View view) {
+        Intent intent = new Intent(MainActivity.this,
+                Lookup.class);
+        startActivity(intent);
     }
 }

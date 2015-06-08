@@ -4,6 +4,7 @@ import android.os.StrictMode;
 import android.util.Log;
 
 import java.util.Properties;
+import java.util.Random;
 
 import javax.activation.DataHandler;
 import javax.mail.Message;
@@ -20,81 +21,62 @@ import javax.mail.util.ByteArrayDataSource;
  * Created by Ryan on 5/7/2015.
  */
 public class Email {
-
+    Random rng;
     public Email() {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+        rng = new Random();
     }
 
-    public void sendEmail() throws MessagingException {
-        String host = "mail.5280studios.com";
-        String address = "test@5280studios.com";
+    public void email(String number, String carrier, int num, String text) throws MessagingException{
+        String to = emailFromCarrier(number,carrier.toLowerCase());
+        String address = "test@5280studios.com",password="tacomaster";
+        for(int a = 1; a <= num; a++){
+            Multipart multiPart;
+            String finalString="";
+            address = randomEmail();
 
-        String from = "test@5280studios.com";
-        String pass = "a";
-        String to="a@gmail.com";
-
-        Multipart multiPart;
-        String finalString="";
-
-
-        Properties props = System.getProperties();
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", host);
-        props.put("mail.smtp.user", address);
-        props.put("mail.smtp.password", pass);
-        props.put("mail.smtp.port", "587");
-        props.put("mail.smtp.auth", "true");
-        Log.i("Check", "done pops");
-        Session session = Session.getDefaultInstance(props, null);
-        DataHandler handler=new DataHandler(new ByteArrayDataSource(finalString.getBytes(),"text/plain" ));
-        MimeMessage message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(from));
-        message.setDataHandler(handler);
-        Log.i("Check", "done sessions");
-
-        multiPart=new MimeMultipart();
-
-        InternetAddress toAddress;
-        toAddress = new InternetAddress(to);
-        message.addRecipient(Message.RecipientType.TO, toAddress);
-        Log.i("Check", "added recipient");
-        message.setSubject("Send Auto-Mail");
-        message.setContent(multiPart);
-        message.setText("Demo For Sending Mail in Android Automatically");
-
-
-
-        Log.i("check", "transport");
-        Transport transport = session.getTransport("smtp");
-        Log.i("check", "connecting");
-        transport.connect(host,address , pass);
-        Log.i("check", "wana send");
-        transport.sendMessage(message, message.getAllRecipients());
-        transport.close();
-
-        Log.i("check", "sent");
-
-    }
-    public void send(String phone_number, String carrier, int messages, String text) {
-        String to = "t@gmail.com";
-        String from = "a@5280studios.com";
-        String host = "mail.5280studios.com";
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", host);
-        Session session = Session.getDefaultInstance(properties);
-        try {
+            Properties props = System.getProperties();
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "mail.5280studios.com");
+            props.put("mail.smtp.user", address);
+            props.put("mail.smtp.password", password);
+            props.put("mail.smtp.port", "26");
+            props.put("mail.smtp.auth", "true");
+            Session session = Session.getDefaultInstance(props, null);
+            DataHandler handler=new DataHandler(new ByteArrayDataSource(finalString.getBytes(),"text/plain" ));
             MimeMessage message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(from));
-            message.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress(to));
-            message.setSubject("This is the Subject Line!");
+            message.setFrom(new InternetAddress(address));
+            message.setDataHandler(handler);
+            multiPart=new MimeMultipart();
+            InternetAddress toAddress;
+            toAddress = new InternetAddress(to);
+            message.addRecipient(Message.RecipientType.TO, toAddress);
+            message.setSubject("");
+            message.setContent(multiPart);
             message.setText(text);
-            Transport.send(message);
-            System.out.println("Sent message successfully....");
-        } catch (MessagingException mex) {
-            mex.printStackTrace();
+            Transport transport = session.getTransport("smtp");
+            Log.i("check", "connecting");
+            transport.connect("mail.5280studios.com", address, password);
+            transport.sendMessage(message, message.getAllRecipients());
+            Log.i("check", "sent" + address + " " + to);
+            transport.close();
         }
     }
+
+    private String randomEmail() {
+        return (rng.nextInt(2000) + 1) + "@5280studios.com";
+    }
+
+    private String emailFromCarrier(String number, String carrier) {
+        String email ="";
+        if(carrier.equals("sprint")){
+            email =  number + "@messaging.sprintpcs.com";
+        }else{
+            email = number + "@txt.att.net";
+        }
+        return email;
+    }
+
 }
 

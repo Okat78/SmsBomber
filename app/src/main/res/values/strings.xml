@@ -8,6 +8,8 @@
     <string name="send_main">Send</string>
     <string name="choose_carrier">Chose a Carrier</string>
     <string name="choose_messages">How Many Messages?</string>
+    <string name="messages_number">Number of Messages</string>
+    <string name="lookup">Lookup</string>
 
     <string-array name="carrier_arrays">
         <item>Sprint</item>
@@ -17,6 +19,7 @@
     <string-array name="messages_arrays">
         <item>1</item>
         <item>5</item>
+        <item>75</item>
     </string-array>
 
 </resources>
