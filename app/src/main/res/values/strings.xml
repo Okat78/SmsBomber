@@ -1,7 +1,6 @@
 <resources>
-    <string name="app_name">Sms_Bomber</string>
+    <string name="app_name">Sms Bomber</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="phone_number_main">Phone Number</string>
     <string name="message_main">Message</string>
@@ -10,10 +9,14 @@
     <string name="choose_messages">How Many Messages?</string>
     <string name="messages_number">Number of Messages</string>
     <string name="lookup">Lookup</string>
+    <string name="donate">Donate</string>
 
     <string-array name="carrier_arrays">
         <item>Sprint</item>
-        <item>ATAT</item>
+        <item>AT&amp;T</item>
+        <item>T-Mobile</item>
+        <item>Verizon</item>
+        <item>M1</item>
     </string-array>
 
     <string-array name="messages_arrays">
